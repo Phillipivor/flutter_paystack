@@ -12,6 +12,8 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
+    // Using WillPopScope for now; PopScope API differs across SDK versions.
+    // ignore: deprecated_member_use
     return new WillPopScope(
       onWillPop: _onWillPop,
       child: buildChild(context),

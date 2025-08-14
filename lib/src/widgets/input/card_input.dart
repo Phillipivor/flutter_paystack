@@ -37,8 +37,8 @@ class _CardInputState extends State<CardInput> {
     super.initState();
     numberController = new TextEditingController();
     numberController.addListener(_getCardTypeFrmNumber);
-    if (_card?.number != null) {
-      numberController.text = Utils.addSpaces(_card!.number!);
+    if (_card != null && _card.number != null) {
+      numberController.text = Utils.addSpaces(_card.number!);
     }
   }
 
@@ -78,7 +78,7 @@ class _CardInputState extends State<CardInput> {
                   onSaved: (value) {
                     List<int> expiryDate = CardUtils.getExpiryDate(value);
                     _card!.expiryMonth = expiryDate[0];
-                    _card!.expiryYear = expiryDate[1];
+                    _card.expiryYear = expiryDate[1];
                   },
                 ),
               ),
@@ -108,10 +108,12 @@ class _CardInputState extends State<CardInput> {
 
   void _getCardTypeFrmNumber() {
     String input = CardUtils.getCleanedNumber(numberController.text);
-    String cardType = _card!.getTypeForIIN(input);
-    setState(() {
-      this._card!.type = cardType;
-    });
+    if (_card != null) {
+      String cardType = _card.getTypeForIIN(input);
+      setState(() {
+        this._card.type = cardType;
+      });
+    }
   }
 
   void _validateInputs() {
@@ -137,7 +139,7 @@ class _CardInputState extends State<CardInput> {
       color: Colors.grey[600],
     );
     if (_card != null) {
-      switch (_card!.type) {
+      switch (_card.type) {
         case CardType.masterCard:
           img = 'mastercard.png';
           break;
